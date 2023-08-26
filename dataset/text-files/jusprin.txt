@@ -1,0 +1,67 @@
+Jusprin Tablet
+Generic Name(s): Aspirin
+Other Brands
+Indications
+Jusprin Tablets / Effervescent is used for: 
+ Fever, Headache, Pain/inflammation, Acute coronary syndrome, TIA,  MI, Stroke
+Adult Dose
+PO
+Prophylaxis of myocardial infarction
+Adult: 75-300 mg once daily. Lower doses should be used in patients receiving ACE inhibitors.
+
+Stent implantation
+Adult: 300 mg 2 hr before procedure followed by 150-300 mg/day thereafter.
+
+Mild to moderate pain and fever
+Adult: 150-300 mg repeated every 4-6 hr according to response. Max: 4 g/day. 
+
+Pain and inflammation associated with musculoskeletal and joint disorders
+Adult: Initial: 2.4-3.6 g/day in divided doses. Usual maintenance: 3.6-5.4 g/day. Monitor serum concentrations.
+
+
+Hepatic impairment: Severe liver disease: Not recommended
+Child Dose
+PO
+Juvenile rheumatoid arthritis
+Child: <25 kg: 60-100 mg/kg/day PO divided q6-8hr (maintain serum salicylate at 150-300 mcg/mL) 
+
+>25 kg: 2.4-3.6 g/day
+
+Pain & Fever
+<12 years
+10-15 mg/kg PO q4hr, up to 60-80 mg/kg/day
+Renal Dose
+Renal impairment
+CrCl >10 mL/min: Dose adjustment not necessary
+CrCl <10 mL/min: Not recommended
+Administration
+Should be taken with food.
+Contra Indications
+Hypersensitivity (attacks of asthma, angioedema, urticaria or rhinitis), active peptic ulceration; pregnancy (3rd trimester), children <12 yr, patients with haemophilia or haemorrhagic disorders, gout, severe renal or hepatic impairment, lactation.
+Precautions
+Patients with history  of asthma, angioedema, urticaria or rhinitis, nasal polyp, severe renal or hepatic impairment, lactation.
+
+Lactation: Drug enters breast milk; decision should be made regarding whether to discontinue nursing or to discontinue drug, taking into account importance of drug to mother.
+Pregnancy-Lactation
+Pregancy
+Avoid chronic or intermittent high doses during pregnancy; may affect maternal and newborn hemostasis mechanisms, leading to an increased risk of hemorrhage
+
+High doses may also increase perinatal mortality by intrauterine growth restriction and teratogenic effects
+
+Near term, aspirin may prolong gestation and labor
+
+Premature closure of the ductus arteriosus may occur if used near term with use of full-dose aspirin
+
+Lactation
+Drug enters breast milk; a decision should be made regarding whether to discontinue nursing or to discontinue drug, taking into account importance of drug to mother
+Interactions
+Alcohol, corticosteroids, analgin, phenylbutazone and oxyphenbutazone may increase risk of GI ulceration. Aspirin increases phenytoin levels. May antagonize actions of uricosurics and spironolactone.
+
+Potentially Fatal: May potentiate effects of anticoagulants, methotrexate and oral hypoglycaemics.
+Adverse Effects
+Side effects of Aspirin : 
+ GI disturbances; prolonged bleeding time,  rhinitis,  urticaria and epigastric discomfort; angioedema,  salicylism,  tinnitus; bronchospasm.
+
+Potentially Fatal: Gastric erosion,  ulceration and bleeding; severe,  occasionally fatal exacerbation of airway obstruction in asthma; Reye's syndrome (children <12 yr). Hepatotoxicity; CNS depression which may lead to coma; CV collapse and resp failure; paroxysmal bronchospasm and dyspnoea.
+Mechanism of Action:
+Aspirin is an analgesic, anti-inflammatory and antipyretic. It inhibits cyclooxygenase, which is responsible for the synthesis of prostaglandin and thromboxane. It also inhibits platelet aggregation.
