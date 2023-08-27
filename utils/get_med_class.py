@@ -1,6 +1,7 @@
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from clarifai_grpc.grpc.api.status import status_code_pb2
+import base64
 import toml
 
 secrets = toml.load(".streamlit\secrets.toml")["secrets"]
@@ -10,13 +11,14 @@ USER_ID = secrets["MC_USER_ID"]
 APP_ID = secrets["MC_APP_ID"]
 MODEL_ID = secrets["MC_MODEL_ID"]
 MODEL_VERSION_ID = secrets["MC_MODEL_VERSION_ID"]
-
 ############################################################################
 # YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE TO RUN THIS EXAMPLE
 ############################################################################
 
 
-def get_medicine_class(image_url):
+def get_medicine_class(image_path):
+    image = open(image_path, 'rb')
+    image_read = image.read()
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
     metadata = (('authorization', 'Key ' + PAT),)
@@ -30,7 +32,7 @@ def get_medicine_class(image_url):
             resources_pb2.Input(
                 data=resources_pb2.Data(
                     image=resources_pb2.Image(
-                        url=image_url
+                        base64=image_read
                     )
                 )
             )
