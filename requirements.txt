@@ -9,3 +9,4 @@ InstructorEmbedding
 sentence_transformers
 transformers
 clarifai
+faiss-cpu
