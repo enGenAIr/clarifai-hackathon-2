@@ -157,7 +157,8 @@ uploaded_file = None
 vector_database = None
 demo_option = st.radio(
     "Choose an option",
-    ["Upload my own image","Choose from list"]
+    ["Upload my own image","Choose from list"],
+    key = "radios"
 )
 if demo_option == 'Choose from list':
     image_label = st.selectbox(
@@ -195,7 +196,7 @@ if demo_option == 'Choose from list':
     st.write(" ")
 else:
     # get image code
-    uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False)
+    uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False, key="upld")
     if uploaded_file is not None:
         st.session_state["text_input"] = None
         bytes_data = uploaded_file.getvalue()
