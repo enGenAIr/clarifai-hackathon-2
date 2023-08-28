@@ -20,17 +20,17 @@ from clarifai_grpc.grpc.api.status import status_code_pb2
 import utils
 import toml
 
-secrets = toml.load(".streamlit\secrets.toml")["secrets"]
+# secrets = toml.load(".streamlit\secrets.toml")["secrets"]
 
-PAT = secrets["PAT"]
-Llama_USER_ID = secrets["Llama_USER_ID"]
-Llama_APP_ID = secrets["Llama_APP_ID"]
-Llama_MODEL_ID = secrets["Llama_MODEL_ID"]
+PAT = st.secrets["PAT"]
+Llama_USER_ID = st.secrets["Llama_USER_ID"]
+Llama_APP_ID = st.secrets["Llama_APP_ID"]
+Llama_MODEL_ID = st.secrets["Llama_MODEL_ID"]
 
-USER_ID = secrets["MC_USER_ID"]
-APP_ID = secrets["MC_APP_ID"]
-MODEL_ID = secrets["MC_MODEL_ID"]
-MODEL_VERSION_ID = secrets["MC_MODEL_VERSION_ID"]
+USER_ID = st.secrets["MC_USER_ID"]
+APP_ID = st.secrets["MC_APP_ID"]
+MODEL_ID = st.secrets["MC_MODEL_ID"]
+MODEL_VERSION_ID = st.secrets["MC_MODEL_VERSION_ID"]
 
 
 prompt_template = """
