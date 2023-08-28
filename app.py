@@ -10,7 +10,7 @@ import json
 import torch
 from tqdm.auto import tqdm
 from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.llms import Clarifai
@@ -58,8 +58,11 @@ st.set_page_config(
 
 @st.cache_resource
 def load_embedding_model():
-    embedding_model = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-base',
-                                                model_kwargs = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu')})
+    # embedding_model = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-base',
+                                                # model_kwargs = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu')})
+    embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
+                                   model_kwargs={'device':"cpu"})
+
     return embedding_model
 
 @st.cache_data
@@ -72,7 +75,6 @@ def load_llm_model():
     llm = Clarifai(
     pat=PAT, user_id=Llama_USER_ID, app_id=Llama_APP_ID, model_id=Llama_MODEL_ID, verbose=True
     )
-
     return llm
 
 
@@ -88,7 +90,12 @@ def retrieve_document(query_input):
     return related_doc
 
 def retrieve_answer():
-    prompt_answer=  st.session_state.my_text_input + " " + "Please provide clear, concise and useful information."
+    if st.session_state.text_input is not None:
+        st.session_state["my_text_input"] = st.session_state.text_input
+    else:
+        st.session_state["my_text_input"] = st.session_state.image_input
+    
+    prompt_answer=  st.session_state.my_text_input
     answer = qa_retriever.run(prompt_answer)
     log = {"timestamp": datetime.datetime.now(),
         "question":st.session_state.my_text_input,
@@ -118,8 +125,6 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 datetime_format= "%Y-%m-%d %H:%M:%S"
 
-# embedding_model = load_embedding_model()
-# llm_model = load_llm_model()
 if "embedding" not in st.session_state:
     st.session_state.embedding = load_embedding_model()
 else:
@@ -130,6 +135,7 @@ if "llm_model" not in st.session_state:
 else:
     llm_model = st.session_state.llm_model
 
+# vector_database = load_faiss_index("adol")
     
 
 st.write("# PharmOgle-Bot 🤖")
@@ -148,59 +154,80 @@ st.markdown("---")
 st.write(" ")
 
 uploaded_file = None
-# demo_option = st.radio(
-#     "Choose an option",
-#     ["Upload my own image","Choose from list"]
-# )
-# if demo_option == 'Choose from list':
-#     image_label = st.selectbox(
-#     'Choose your medication',
-#     ('Adol','Aggrex','Amrizole','Atoreza','Augmentin','Betadine','Brufen','C-retard','Ceftriaxone','Celebrex','Cemicresto','Cholerose','Ciprofar','Clarinase','Congestal','Daflon','Dalacin','Diflucan','Flagyl','Floxabact','Foradil','Fucidin','Garamycin','Glucophage','Ivypront','Janumet','Jusprin','Lactulose','Lamifen','Megamox','Midodrine','Mucophylline','Neurovit','Oracure','Pridocaine','Primrose','Sediproct','Zantac','Zyrtec'), key = "mediselect")
+vector_database = None
+demo_option = st.radio(
+    "Choose an option",
+    ["Upload my own image","Choose from list"]
+)
+if demo_option == 'Choose from list':
+    image_label = st.selectbox(
+    'Choose your medication',
+    ('Adol','Aggrex','Amrizole','Atoreza','Augmentin','Betadine','Brufen','C-retard','Ceftriaxone','Celebrex','Cemicresto','Cholerose','Ciprofar','Clarinase','Congestal','Daflon','Dalacin','Diflucan','Flagyl','Floxabact','Foradil','Fucidin','Garamycin','Glucophage','Ivypront','Janumet','Jusprin','Lactulose','Lamifen','Megamox','Midodrine','Mucophylline','Neurovit','Oracure','Pridocaine','Primrose','Sediproct','Zantac','Zyrtec'), key = "mediselect")
     
-#     if vector_database is not None:
-#         vector_database = load_faiss_index(image_label.lower())
-#     qa_retriever = load_retriever(llm= llm_model, db= vector_database)
+    # print(vector_database)
+    if "vdb" not in st.session_state:
+        st.session_state["vdb"] = load_faiss_index(image_label.lower())
+        st.session_state["medi"] = image_label.lower()
+    else:
+        if image_label.lower() != st.session_state["medi"]:
+            st.session_state["vdb"] = load_faiss_index(image_label.lower())
+            st.session_state["medi"] = image_label.lower()
+    vector_database = st.session_state["vdb"]
 
-#     st.write("""
-#             ### Ask a question
-#             """)
-
-
-#     for chat in st.session_state.chat_history:
-#         st_message(**chat)
-
-#     query_input = st.text_input(label= 'Please Enter your Question about '+image_label , key = 'my_text_input', on_change= retrieve_answer)
-
-#     clear_button = st.button("Start new convo",
-#                             on_click=clean_chat_history,
-#                             key="mediclear")
-
-#     st.write(" ")
-#     st.write(" ")
-# else:
-# get image code
-uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False)
-if uploaded_file is not None:
-    bytes_data = uploaded_file.getvalue()
-    image_label = utils.get_image_label(bytes_data, USER_ID, APP_ID, MODEL_ID, PAT, MODEL_VERSION_ID)
-    vector_database = load_faiss_index(image_label)
+    # vector_database = load_faiss_index(image_label.lower())
     qa_retriever = load_retriever(llm= llm_model, db= vector_database)
 
     st.write("""
             ### Ask a question
             """)
 
-
     for chat in st.session_state.chat_history:
         st_message(**chat)
 
-    query_input = st.text_input(label= 'Please Enter your Question about '+image_label.capitalize() , key = 'my_text_input', on_change= retrieve_answer )
+    st.session_state["image_input"] = None
+    query_input = st.text_input(label= 'Please Enter your Question about '+image_label , key = 'text_input', on_change= retrieve_answer)
 
     clear_button = st.button("Start new convo",
-                            on_click=clean_chat_history)
+                            on_click=clean_chat_history,
+                            key="mediclear")
 
     st.write(" ")
     st.write(" ")
+else:
+    # get image code
+    uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False)
+    if uploaded_file is not None:
+        st.session_state["text_input"] = None
+        bytes_data = uploaded_file.getvalue()
+        image_label = utils.get_image_label(bytes_data, USER_ID, APP_ID, MODEL_ID, PAT, MODEL_VERSION_ID)
+
+        if "vdb" not in st.session_state:
+            st.session_state["vdb"] = load_faiss_index(image_label.lower())
+            st.session_state["medi"] = image_label.lower()
+        else:
+            if image_label.lower() != st.session_state["medi"]:
+                st.session_state["vdb"] = load_faiss_index(image_label.lower())
+                st.session_state["medi"] = image_label.lower()
+
+        vector_database = st.session_state["vdb"]
+        # vector_database = load_faiss_index(image_label)
+        qa_retriever = load_retriever(llm= llm_model, db= vector_database)
+
+        st.write("""
+                ### Ask a question
+                """)
+
+
+        for chat in st.session_state.chat_history:
+            st_message(**chat)
+
+        query_input = st.text_input(label= 'Please Enter your Question about '+image_label.capitalize() , key = 'image_input', on_change= retrieve_answer )
+
+        clear_button = st.button("Start new convo",
+                                on_click=clean_chat_history)
+
+        st.write(" ")
+        st.write(" ")
 
 st.markdown("---")
 
