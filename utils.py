@@ -6,11 +6,6 @@ from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from clarifai_grpc.grpc.api.status import status_code_pb2
 
 def get_image_label(image_file_bytes,USER_ID, APP_ID, MODEL_ID, PAT, MODEL_VERSION_ID):
-    
-    MODEL_VERSION_ID = 'b652f86cc8f346c3bce068a7459f8c91'
-
-    IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg'
-
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
