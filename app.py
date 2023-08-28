@@ -138,17 +138,42 @@ st.markdown("---")
 st.write(" ")
 
 uploaded_file = None
-demo_option = st.radio(
-    "Choose an option",
-    ["Upload my own image","Choose from list"]
-)
-if demo_option == 'Choose from list':
-    image_label = st.selectbox(
-    'Choose your medication',
-    ('Adol','Aggrex','Amrizole','Atoreza','Augmentin','Betadine','Brufen','C-retard','Ceftriaxone','Celebrex','Cemicresto','Cholerose','Ciprofar','Clarinase','Congestal','Daflon','Dalacin','Diflucan','Flagyl','Floxabact','Foradil','Fucidin','Garamycin','Glucophage','Ivypront','Janumet','Jusprin','Lactulose','Lamifen','Megamox','Midodrine','Mucophylline','Neurovit','Oracure','Pridocaine','Primrose','Sediproct','Zantac','Zyrtec'), key = "mediselect")
+# demo_option = st.radio(
+#     "Choose an option",
+#     ["Upload my own image","Choose from list"]
+# )
+# if demo_option == 'Choose from list':
+#     image_label = st.selectbox(
+#     'Choose your medication',
+#     ('Adol','Aggrex','Amrizole','Atoreza','Augmentin','Betadine','Brufen','C-retard','Ceftriaxone','Celebrex','Cemicresto','Cholerose','Ciprofar','Clarinase','Congestal','Daflon','Dalacin','Diflucan','Flagyl','Floxabact','Foradil','Fucidin','Garamycin','Glucophage','Ivypront','Janumet','Jusprin','Lactulose','Lamifen','Megamox','Midodrine','Mucophylline','Neurovit','Oracure','Pridocaine','Primrose','Sediproct','Zantac','Zyrtec'), key = "mediselect")
     
+#     if vector_database is not None:
+#         vector_database = load_faiss_index(image_label.lower())
+#     qa_retriever = load_retriever(llm= llm_model, db= vector_database)
 
-    vector_database = load_faiss_index(image_label.lower())
+#     st.write("""
+#             ### Ask a question
+#             """)
+
+
+#     for chat in st.session_state.chat_history:
+#         st_message(**chat)
+
+#     query_input = st.text_input(label= 'Please Enter your Question about '+image_label , key = 'my_text_input', on_change= retrieve_answer)
+
+#     clear_button = st.button("Start new convo",
+#                             on_click=clean_chat_history,
+#                             key="mediclear")
+
+#     st.write(" ")
+#     st.write(" ")
+# else:
+# get image code
+uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False)
+if uploaded_file is not None:
+    bytes_data = uploaded_file.getvalue()
+    image_label = utils.get_image_label(bytes_data, USER_ID, APP_ID, MODEL_ID, PAT, MODEL_VERSION_ID)
+    vector_database = load_faiss_index(image_label)
     qa_retriever = load_retriever(llm= llm_model, db= vector_database)
 
     st.write("""
@@ -159,38 +184,13 @@ if demo_option == 'Choose from list':
     for chat in st.session_state.chat_history:
         st_message(**chat)
 
-    query_input = st.text_input(label= 'Please Enter your Question about '+image_label , key = 'my_text_input', on_change= retrieve_answer)
+    query_input = st.text_input(label= 'Please Enter your Question about '+image_label.capitalize() , key = 'my_text_input', on_change= retrieve_answer )
 
     clear_button = st.button("Start new convo",
-                            on_click=clean_chat_history,
-                            key="mediclear")
+                            on_click=clean_chat_history)
 
     st.write(" ")
     st.write(" ")
-else:
-    # get image code
-    uploaded_file = st.file_uploader(label='**Upload Image file**', type=['jpg','jpeg','png'], accept_multiple_files=False)
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        image_label = utils.get_image_label(bytes_data, USER_ID, APP_ID, MODEL_ID, PAT, MODEL_VERSION_ID)
-        vector_database = load_faiss_index(image_label)
-        qa_retriever = load_retriever(llm= llm_model, db= vector_database)
-
-        st.write("""
-                ### Ask a question
-                """)
-
-
-        for chat in st.session_state.chat_history:
-            st_message(**chat)
-
-        query_input = st.text_input(label= 'Please Enter your Question about '+image_label.capitalize() , key = 'my_text_input', on_change= retrieve_answer )
-
-        clear_button = st.button("Start new convo",
-                                on_click=clean_chat_history)
-
-        st.write(" ")
-        st.write(" ")
 
 st.markdown("---")
 
