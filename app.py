@@ -118,8 +118,18 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 datetime_format= "%Y-%m-%d %H:%M:%S"
 
-embedding_model = load_embedding_model()
-llm_model = load_llm_model()
+# embedding_model = load_embedding_model()
+# llm_model = load_llm_model()
+if "embedding" not in st.session_state:
+    st.session_state.embedding = load_embedding_model()
+else:
+    embedding_model = st.session_state.embedding
+
+if "llm_model" not in st.session_state:
+    st.session_state.llm_model = load_llm_model()
+else:
+    llm_model = st.session_state.llm_model
+
     
 
 st.write("# PharmOgle-Bot 🤖")
